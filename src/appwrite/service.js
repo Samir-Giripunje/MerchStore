@@ -79,7 +79,7 @@ async deleteOrders(Orderid){
         console.log("Appwrite serive :: createPost :: error", error);
     }
 }
-
+	
 //upload file 
 async uploadFile(file){
     try {
@@ -112,6 +112,14 @@ async deleteFile(fileId){
 //preview
 getFilePreview(fileId){
     return this.bucket.getFilePreview(
+        conf.appwriteBucketId,
+        fileId
+    )
+}
+
+//get file
+getFile(fileId){
+    return this.bucket.getFileView(
         conf.appwriteBucketId,
         fileId
     )
