@@ -1,6 +1,6 @@
 import React from "react";
 import {ShirtLogo,HoodieLogo,WhatsappLogo,PhoneNumberLogo,MailLogo} from "../../assets/FooterLogo";
-
+import { NavLink } from "react-router-dom";
 const containerStyle={
   position: 'relative',
   bottom: 0
@@ -8,6 +8,7 @@ const containerStyle={
 
 const horizontalRule = {
   border: '1px solid gray', // Specify the width, style, and color
+  marginTop: '25px'
 };
 
 const content={
@@ -41,8 +42,8 @@ function Footer() {
       <div className="md:flex md:w-5/12  pt-6 md:pt-0">
   <div className="md:w-full ">
     <div className="flex justify-center  ">
-      <div className="pr-3"> <ShirtLogo /></div>
-      <div> <HoodieLogo/></div>
+      <div className="pr-3"><NavLink to='/tshirt'><ShirtLogo /></NavLink> </div>
+      <div><NavLink to='/hoodie'> <HoodieLogo/></NavLink> </div>
     </div>
     <div className="text-2xl text-gray-700  pt-2 md:pt-0 flex justify-center "> StyleHub </div>
     <div className="text-2xl text-gray-700  flex justify-center">Merch Store</div>
