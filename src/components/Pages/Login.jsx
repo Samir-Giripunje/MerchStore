@@ -1,136 +1,75 @@
-import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import React, { useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
+import authService from "../../appwrite/authentication";
+import { useDispatch } from "react-redux";
+import { login as authLogin } from "../../store/authSlice";
 
-const LoginForm = () => {
+function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [emailError, setEmailError] = useState('');
 
-  const handleSubmit = (e) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission logic here
+
+    if (!isValidEmail()) {
+      setEmailError('Enter a valid college email address (@iitdh.ac.in)');
+      return;
+    }
+
+    const check = await authService.login({ email, password });
+
+    if (check) {
+      const userData = await authService.getCurrentUser();
+      if (userData) {
+        dispatch(authLogin({ email, password }));
+        console.log("User should be login now");
+        navigate('/tshirt');
+      }
+    }
+  };
+
+  const isValidEmail = () => {
+    return email.endsWith('@iitdh.ac.in');
   };
 
   const renderErrorMessage = (fieldName) => {
-    // You can implement error message rendering logic based on your needs
+    if (fieldName === 'email' && emailError) {
+      return <div style={{ color: 'red', fontSize: '12px' }}>{emailError}</div>;
+    }
     return null;
   };
 
-  const styles = {
-    app: {
-      fontFamily: 'Cambria, Cochin, Georgia, Times, "Times New Roman", serif',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      flexDirection: 'column',
-      gap: '20px',
-      height: '100vh',
-      background: 'url(https://cloud.appwrite.io/v1/storage/buckets/65be24360fa8c5c2e0e2/files/dev4/view?project=65be0eea36b52d7d679e&mode=admin)', // replace with your background image URL
-      backgroundSize: 'cover',
-    },
-    blurBackground: {
-      position: 'fixed',
-      width: '100%',
-      height: '100%',
-      filter: 'blur(10px)',
-      zIndex: '-1',
-    },
-    formContainer: {
-      backgroundColor: 'rgba(255, 255, 255, 0.8)', // Adjust the background color and opacity
-      padding: '2rem',
-      borderRadius: '8px',
-      boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
-    },
-    title: {
-      fontSize: '25px',
-      marginBottom: '20px',
-    },
-    inputContainer: {
-      display: 'flex',
-      flexDirection: 'column',
-      gap: '8px',
-      margin: '10px',
-    },
-    input: {
-      height: '25px',
-      border: '1px solid rgba(0, 0, 0, 0.2)',
-      padding: '8px',
-      width: '100%',
-    },
-    submitButton: {
-      marginTop: '10px',
-      cursor: 'pointer',
-      fontSize: '15px',
-      background: '#01d28e',
-      border: '1px solid #01d28e',
-      color: '#fff',
-      padding: '10px 20px',
-    },
-    submitButtonHover: {
-      background: '#6cf0c2',
-    },
-    buttonContainer: {
-      display: 'flex',
-      justifyContent: 'center',
-    },
-    error: {
-      color: 'red',
-      fontSize: '12px',
-    },
-    signInLink: {
-        color: '#3498db',
-        cursor: 'pointer',
-        textDecoration: 'underline',
-      },
-  };
-
   return (
-    <div style={styles.app}>
-      <div style={styles.blurBackground}></div>
-      <div className="login-form" style={styles.formContainer}>
-        <div className="title" style={styles.title}>
-          Log In
+    <div className="bg-[#E2E2E2] min-h-screen ">
+      <div className="flex justify-between pt-4">
+        <div className="text-2xl text-slate-900 font-bold  md:w-1/2 pl-3 text-center">StyleHub MerchStore</div>
+        <div className="flex pr-4">
+          <NavLink to='/signup' style={({ isActive }) => ({ fontWeight: isActive ? "bold" : "" })} className=' hover:bg-slate-400 p-1 px-2 rounded-xl '>Signup</NavLink>
+          <NavLink to='/' style={({ isActive }) => ({ fontWeight: isActive ? "bold" : "" })} className='bg-slate-900 text-slate-200 px-2 p-1 md:ml-2 hover:font-medium  text-center rounded-md '>{window.innerWidth < 600 ? "Home" : "Back to Home"}</NavLink>
         </div>
-        <div className="form">
-          <form onSubmit={handleSubmit} style={styles.formContainer}>
-            <div className="input-container" style={styles.inputContainer}>
-              <label>Email </label>
-              <input
-                type="text"
-                name="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                style={styles.input}
-                required
-                className='rounded-lg'
-              />
-              {renderErrorMessage("email")}
-            </div>
-            <div className="input-container" style={styles.inputContainer}>
-              <label>Password </label>
-              <input
-                type="password"
-                name="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                style={styles.input}
-                required
-                className='rounded-lg'
-              />
-              {renderErrorMessage("password")}
-            </div>
-            <div className="button-container" style={styles.buttonContainer}>
-              <input type="submit" style={styles.submitButton}  className='rounded-md'/>
-            </div>
-          </form>
-          <p style={styles.smallText}>
-        Don't have an account?
-        
-        <NavLink to="/signup" style={styles.signInLink}>Sign In</NavLink>
-        </p>
-        </div>
+      </div>
+      <div className="flex justify-center items-center pt-[15vh] md:pt-[24vh] px-2">
+        <form className="max-w-80 md:max-w-96 bg-[#F3F2F3] rounded-md">
+          <div className="flex justify-center text-2xl font-semibold pt-8 font-sans">Agent Login</div>
+          <div className="flex justify-center text-center px-10 pt-4">Enter your detail to get sign in to your account</div>
+          <div className="px-12 py-6">
+            <div className="pt-3 pl-1">College Email</div>
+            <input type="text" name="email" placeholder="Enter email" value={email} onChange={(e) => setEmail(e.target.value)} required className="h-[30px] rounded-md pl-3 border-[2px] border-slate-400" />
+            {renderErrorMessage("email")}
+            <div className="pt-3 pl-1">Password</div>
+            <input type="password" name="password" placeholder="Enter password" value={password} onChange={(e) => setPassword(e.target.value)} required className="h-[30px] rounded-md pl-3 border-[2px] border-slate-400  max-w-60 md:max-w-96" />
+            {renderErrorMessage("nonmatch")}
+            <input type="submit" className='rounded-md bg-amber-200 py-[2px] px-3 mt-3' onClick={handleSubmit} />
+            <div className="hidden sm:block text-xs pt-3 "><span>The information will be kept securely </span></div>
+          </div>
+        </form>
       </div>
     </div>
   );
-};
+}
 
-export default LoginForm;
+export default Login;

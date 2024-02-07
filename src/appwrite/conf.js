@@ -4,7 +4,7 @@ const conf = {
     appwriteDatabaseId: String(import.meta.env.VITE_APPWRITE_DATABASE_ID),
     appwriteCollectionIdOrders: String(import.meta.env.VITE_APPWRITE_COLLECTION_ID_ORDERS),
     appwriteCollectionIdDress: String(import.meta.env.VITE_APPWRITE_COLLECTION_ID_DRESS),
-    appwriteCollectionIdDress: String(import.meta.env.VITE_APPWRITE_COLLECTION_ID_USER),
+    appwriteCollectionIdUser: String(import.meta.env.VITE_APPWRITE_COLLECTION_ID_USER),
     appwriteBucketId: String(import.meta.env.VITE_APPWRITE_BUCKET_ID),
 }
 // there was a name issue with the import.meta.env.VITE_APPWRITE_URL, it was later fixed in debugging video

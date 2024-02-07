@@ -16,7 +16,7 @@ function Tshirts() {
  
 
   const currRender = useSelector((state) => state.auth.showDesign);
-  const link = useSelector((state)=> state.auth.link)
+
 
 
   return (
@@ -35,7 +35,7 @@ function Tshirts() {
         </div>
         <Footer />
       </div>
-    ):(<div><DesignCard link={link}/></div>)
+    ):(<div><DesignCard /></div>)
   );
 }
 
