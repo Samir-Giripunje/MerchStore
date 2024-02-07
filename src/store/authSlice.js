@@ -22,9 +22,13 @@ const authSlice=createSlice({
             designCard:(state,action)=>{
                 state.showDesign=true;
                 state.link=action.payload
+            },
+            cancelDesign:(state)=>{
+                state.showDesign=false;
+                state.link=''
             }
     }
 })
 
-export const  {login,logout,designCard}=authSlice.actions;
+export const  {login,logout,designCard,cancelDesign}=authSlice.actions;
 export default authSlice.reducer
